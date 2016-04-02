@@ -1,0 +1,12 @@
+name: TopTenHeads
+main: com.wasteofplastic.skyplus.TopTenHeads
+version: ${version}
+description: Plugin for A SkyBlock to show top ten heads
+author: tastybento
+depends: [ASkyBlock]
+commands:
+    removetopten:
+        description: Removes a top ten score board
+    placetopten:
+        description: Places the top ten score board.
+    
