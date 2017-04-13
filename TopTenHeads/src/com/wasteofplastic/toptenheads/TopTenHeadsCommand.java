@@ -1,4 +1,4 @@
-package com.wasteofplastic.skyplus;
+package com.wasteofplastic.toptenheads;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,24 +16,27 @@ import org.bukkit.util.BlockIterator;
 
 import com.wasteofplastic.askyblock.events.IslandLevelEvent;
 
-public class PlusCommand implements CommandExecutor {
+public class TopTenHeadsCommand implements CommandExecutor {
     private TopTenHeads plugin;
     private List<LevelListener> topTen;
     /**
      * @param plugin
      */
-    public PlusCommand(TopTenHeads plugin) {
+    public TopTenHeadsCommand(TopTenHeads plugin) {
         this.plugin = plugin;
         topTen = new ArrayList<LevelListener>();
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, Command arg1, String label, String[] arg3) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Command must be used in-game while looking at a row of signs.");
             return false;
         }
         Player player = (Player)sender;
+        if (!player.isOp() && !player.hasPermission("askyblock.mod.topten")) {
+            sender.sendMessage(ChatColor.RED + "You must be op or have askyblock.mod.topten permission to use this command");
+            return true;
+        }
         // Deal with global commands first
         if (label.equalsIgnoreCase("placetopten")) {
             if (arg3.length == 1) {

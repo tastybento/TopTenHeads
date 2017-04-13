@@ -1,4 +1,4 @@
-package com.wasteofplastic.skyplus;
+package com.wasteofplastic.toptenheads;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

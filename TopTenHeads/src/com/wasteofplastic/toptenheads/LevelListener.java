@@ -1,4 +1,4 @@
-package com.wasteofplastic.skyplus;
+package com.wasteofplastic.toptenheads;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,7 +22,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.wasteofplastic.askyblock.ASkyBlockAPI;
-import com.wasteofplastic.askyblock.events.IslandLevelEvent;
+import com.wasteofplastic.askyblock.events.IslandPostLevelEvent;
 
 public class LevelListener implements Listener {
 
@@ -48,7 +49,7 @@ public class LevelListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onNewLevel(final IslandLevelEvent event) {
+    public void onNewLevel(final IslandPostLevelEvent event) {
         //plugin.getLogger().info("Island level event");
         Map<UUID, Integer> topTen = api.getTopTen();
         topTen = sortByValue(topTen);
@@ -68,12 +69,15 @@ public class LevelListener implements Listener {
             // If the count is not yet 10, then anyone can be in the top ten
             return;
         }
-        // TODO: Player is in topTen - check if this is just a repetition
         displayTopTen();
 
     }
 
     private void displayTopTen() {
+        if (topTenLocation == null) {
+            plugin.getLogger().severe("The location of the top ten world does not exist. Maybe a world was deleted?");
+            return;
+        }
         Map<UUID, Integer> topTen = api.getTopTen();
         topTen = sortByValue(topTen);
         // Sort by rank
@@ -91,7 +95,8 @@ public class LevelListener implements Listener {
                 org.bukkit.material.Sign s = (org.bukkit.material.Sign) sign.getData();
                 directionFacing = s.getFacing();
                 sign.setLine(0, "#" + i);
-                String name = plugin.getServer().getOfflinePlayer(entry.getKey()).getName();
+                OfflinePlayer player = plugin.getServer().getOfflinePlayer(entry.getKey());
+                String name = player.getName();
                 sign.setLine(1, name);
                 sign.setLine(2, "Level:" + entry.getValue());
                 sign.update();
@@ -99,10 +104,12 @@ public class LevelListener implements Listener {
                 BlockFace opp = directionFacing.getOppositeFace();
                 Block attachToBlock = b.getRelative(BlockFace.UP).getRelative(opp);
                 attachToBlock.setType(Material.SKULL);
+                
                 Skull skull = (Skull)attachToBlock.getState();
                 skull.setRotation(directionFacing);
                 skull.setSkullType(SkullType.PLAYER);
                 skull.setOwner(name);
+                skull.setOwningPlayer(player);
                 skull.update();
             }
 
@@ -205,4 +212,24 @@ public class LevelListener implements Listener {
     public void setDirection(BlockFace direction) {
         this.direction = direction;
     }
+    /*
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (e.getClickedBlock().getType() == Material.BEDROCK) {
+                Bukkit.broadcastMessage(e.getPlayer().getName() + ":");
+                if (this.api == null) {
+                    Bukkit.broadcastMessage("skyblock is null");
+                }
+                if (this.api.getIslandLocation(e.getPlayer().getUniqueId()) == null) {
+                    Bukkit.broadcastMessage("null island");
+                } else {
+                    Bukkit.broadcastMessage("Not a null island");
+                    Bukkit.broadcastMessage(this.api.getIslandOwnedBy(e.getPlayer().getUniqueId()).getCenter().toString());
+                }
+            }
+        }
+    }
+   */
+    
 }

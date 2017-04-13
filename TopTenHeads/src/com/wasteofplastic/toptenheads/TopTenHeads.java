@@ -1,4 +1,4 @@
-package com.wasteofplastic.skyplus;
+package com.wasteofplastic.toptenheads;
 
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class TopTenHeads extends JavaPlugin {
-    private PlusCommand commandListener;
+    private TopTenHeadsCommand commandListener;
 
     @Override
     public void onEnable() {
@@ -29,7 +29,7 @@ public class TopTenHeads extends JavaPlugin {
             // Load config
             saveDefaultConfig();
             // Register command
-            commandListener = new PlusCommand(this);
+            commandListener = new TopTenHeadsCommand(this);
             getCommand("placetopten").setExecutor(commandListener);
             getCommand("removetopten").setExecutor(commandListener);
             // Load from config
