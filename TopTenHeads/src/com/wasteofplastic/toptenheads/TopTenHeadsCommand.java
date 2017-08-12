@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.Sign;
 import org.bukkit.util.BlockIterator;
 
-import com.wasteofplastic.askyblock.events.IslandLevelEvent;
+import com.wasteofplastic.askyblock.events.IslandPostLevelEvent;
 
 public class TopTenHeadsCommand implements CommandExecutor {
     private TopTenHeads plugin;
@@ -93,10 +93,12 @@ public class TopTenHeadsCommand implements CommandExecutor {
             }
             // Check if this panel already exists
             for (LevelListener panel : topTen) {
-                if (panel.getTopTenLocation().equals(lastBlock.getLocation())) {
-                    panel.setDirection(right);
-                    sender.sendMessage(ChatColor.RED + "Top ten board is already active");
-                    return true;
+                if (panel.getTopTenLocation() != null) {
+                    if (panel.getTopTenLocation().equals(lastBlock.getLocation())) {
+                        panel.setDirection(right);
+                        sender.sendMessage(ChatColor.RED + "Top ten board is already active");
+                        return true;
+                    }
                 }
             }
             LevelListener newTopTen = new LevelListener(plugin, lastBlock.getLocation(), right);
@@ -112,7 +114,7 @@ public class TopTenHeadsCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.GREEN + "Removing " + topTen.size() + " top ten panels");
                 for (LevelListener panel : topTen) {
                     // Unregister
-                    IslandLevelEvent.getHandlerList().unregister(panel);
+                    IslandPostLevelEvent.getHandlerList().unregister(panel);
                     // Clear
                     panel.removeTopTen();
                     // Remove from the list
@@ -146,7 +148,7 @@ public class TopTenHeadsCommand implements CommandExecutor {
             for (LevelListener panel : topTen) {
                 if (panel.getTopTenLocation().equals(lastBlock.getLocation())) {
                     // Unregister
-                    IslandLevelEvent.getHandlerList().unregister(panel);
+                    IslandPostLevelEvent.getHandlerList().unregister(panel);
                     // Clear
                     panel.removeTopTen();
                     // Remove from the list

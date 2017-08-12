@@ -105,12 +105,18 @@ public class LevelListener implements Listener {
                 Block attachToBlock = b.getRelative(BlockFace.UP).getRelative(opp);
                 attachToBlock.setType(Material.SKULL);
                 
-                Skull skull = (Skull)attachToBlock.getState();
+                final Skull skull = (Skull)attachToBlock.getState();
                 skull.setRotation(directionFacing);
                 skull.setSkullType(SkullType.PLAYER);
                 skull.setOwner(name);
                 skull.setOwningPlayer(player);
                 skull.update();
+                plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+
+                    public void run() {
+                        // Run a tick later to try and get the head to change
+                        skull.update();
+                    }}, 10L);
             }
 
 

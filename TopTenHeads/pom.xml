@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wasteofplastic</groupId>
 	<artifactId>TopTenHeads</artifactId>
-	<version>1.2</version>
+	<version>1.3</version>
 	<name>toptenheads</name>
 	<description>Plugin to ASkyBlock</description>
 	<build>
@@ -35,12 +35,12 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.11-R0.1-SNAPSHOT</version>
+			<version>1.12-R0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.wasteofplastic</groupId>
 			<artifactId>askyblock</artifactId>
-			<version>3.0.6.2</version>
+			<version>3.0.6.11</version>
 		</dependency>
 	</dependencies>
 	<repositories>
